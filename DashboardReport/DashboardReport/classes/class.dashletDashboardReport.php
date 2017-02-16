@@ -83,11 +83,17 @@ class dashletDashboardReport implements DashletInterface
     $this->note = $config["DAS_NOTE"];
   }
 
-  public function render($width = 300)
+  public function render($val= null ,$width = 300)
   {
     $cnn = Propel::getConnection("workflow");
     $stmt = $cnn->createStatement();
 
+	if(!empty($_POST)) {
+     $val = $_POST['dd_val'];
+   } else {
+     $val = 'D';
+    }
+	
     $arrayUser = array();
 
     $sql = "SELECT USR.USR_USERNAME, USR.USR_FIRSTNAME, USR.USR_LASTNAME, USR.USR_STATUS
@@ -214,7 +220,7 @@ JOIN PMT_LEVEL_ONE_COMP_REPORT_8 plocr8 ON a.app_uid = plocr8.app_uid
 
 )
 AS u 
-WHERE u.app_status != 'completed' AND u.del_THREAD_STATUS = 'OPEN'  ORDER BY u.APP_NUMBER DESC";		
+WHERE u.app_status != 'completed' AND u.app_status LIKE '%$val%' AND u.del_THREAD_STATUS = 'OPEN'  ORDER BY u.APP_NUMBER DESC";		
 			
 			
     $rsSQL = $stmt->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);

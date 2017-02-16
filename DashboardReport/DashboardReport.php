@@ -1,6 +1,12 @@
 <?php
 G::LoadClass("plugin");
 
+if(!empty ($_POST['dd_val'])){
+require_once ("DashboardReport/classes/class.dashletDashboardReport.php");
+$call = new dashletDashboardReport();
+$call->render($_POST['dd_val']);
+}
+
 class DashboardReportPlugin extends PMPlugin
 {
   private $dashletsUids;

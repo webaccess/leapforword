@@ -4,9 +4,40 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   
-  <title></title>
+  <title>Process Information</title>
   
   {literal}
+  <script>
+
+  function changeStatus() {
+  var x = document.getElementById("mySelect").value;    
+    callAjax1(x);
+   }
+
+
+
+   function callAjax1(val){
+
+   console.log(val);
+   var http = new XMLHttpRequest();
+   var url = "../DashboardReport/DashboardReport";
+    var params = "dd_val="+val;
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.onreadystatechange = function() {
+        if(http.readyState == 4 && http.status == 200) {
+	var container = document.getElementById("maindiv1");
+        container.innerHTML = "";
+        container.innerHTML = http.responseText;
+        document.getElementById("mySelect").value = val ;       
+	
+		}
+    }
+    http.send(params);
+    }
+
+
+  </script>
   <style type="text/css">
   body {
     margin: 0;
@@ -58,7 +89,14 @@
   {/literal}
 </head>
 <body>
-
+<div id = "maindiv1">
+<div>Status: 
+<select id="mySelect" onchange = "changeStatus()">
+  <option value="D">All</option>
+  <option value="To_Do">To Do
+  <option value="Draft">Draft
+</select>
+</div>
 <div class="dataGrid">
   <table width="100%" border="0" cellspacing="3" cellpadding="0">
     <tr>
@@ -84,6 +122,6 @@
     {/foreach}
   </table>
 </div>
-
+</div>
 <!-- <div style="margin-top: 0.25em;"><strong>Note: </strong>{$note}</div> -->
 </html>
