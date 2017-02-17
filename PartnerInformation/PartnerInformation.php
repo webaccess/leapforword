@@ -1,10 +1,21 @@
 <?php
 G::LoadClass("plugin");
 
-if(!empty ($_POST['s_val'])){
-require_once ("PartnerInformation/classes/class.dashletPartnerInformation.php");
+if(!empty ($_POST['s_val'])&& empty ($_POST['d_val']) )
+{
+
+require_once("PartnerInformation/classes/class.dashletPartnerInformation.php");
 $call = new dashletPartnerInformation();
 $call->render($_POST['s_val']);
+
+}
+
+if(!empty ($_POST['d_val'])){
+
+require_once ("PartnerInformation/classes/class.dashletPartnerInformation.php");
+$call = new dashletPartnerInformation();
+$call->renderDetails($_POST['d_val']);
+
 }
 
 class PartnerInformationPlugin extends PMPlugin

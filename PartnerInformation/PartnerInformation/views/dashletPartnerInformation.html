@@ -20,6 +20,33 @@ function printDiv(divName) {
  w.close();
 }
 
+
+function details(id){
+var vald = id.getAttribute('value');
+callAjaxz(vald);
+}
+
+
+function callAjaxz(vald){
+ console.log(vald);
+    var https = new XMLHttpRequest();
+    var url = "../print/print";
+    var params = "d_val="+vald;
+    https.open("POST", url, true);
+    https.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    https.onreadystatechange = function() {
+        if(https.readyState == 4 && https.status == 200) {
+        var container = document.getElementById("maindiv");
+        container.innerHTML = "";
+        container.innerHTML = https.responseText;
+        document.getElementById("search").value = vald ;
+       }
+    }
+    https.send(params);
+    }
+
+
+
 function operation(id){
 
 var val = document.getElementById("search").value;
@@ -100,30 +127,15 @@ function callAjaxxx(val){
   .td{
     width:130px;
   }
+
+ a:hover {
+   cursor:pointer;
+  }
+
   </style>
   {/literal}
 </head>
 <body>
-
-<!--<div class="dataGrid">
-  <table width="100%" border="0" cellspacing="3" cellpadding="0">
-    <tr>
-      <th class="dataGridTitle">User name</th>
-      <th class="dataGridTitle">Full name</th>
-      <th class="dataGridTitle">Status</th>
-    </tr>
-  
-    {foreach from=$user item=item}
-    <tr>
-      <td class="dataGridElement">{$item.userName}</td>
-      <td class="dataGridElement">{$item.fullName}</td>
-      <td class="dataGridElement">{$item.status}</td>
-    </tr>
-    {/foreach}
-  </table>
-</div>
-
-<div style="margin-top: 0.25em;"><strong>Note: </strong>{$note}</div> -->
 
 
 <div id = "maindiv">
@@ -133,82 +145,29 @@ function callAjaxxx(val){
 
 </div>
 
-{if $item  }
+{if $item}
+
 
 <form>
 
-<div id="print" style = "" >
-<div class="dataGrid" style="margin-top:10px;margin-bottom:10px;margin-left:10px;"  >
-                <h1 style="margin-top:10px;margin-bottom:10px;margin-left:10px;"  >Partner Details</h1>
-				<table style="table-layout:fixed; margin-top:10px;margin-bottom:10px;margin-left:10px;"  >
-				<tr>
-				<td class = "td" ><label for="username">Name</label>
-				</td>
-				<td><label for="username">{$item.partnername}</label>
-				</td>
-				</tr>
-				
-				<tr>
-				<td class = "td" ><label for="pwd">Type</label>
-				</td>
-				<td><label for="pwd">{$item.partnertype}</label>
-				</td>
-				</tr>
-				
-				<tr>
-				<td class = "td" ><label for="surname">Address</label>
-				</td>
-				<td><label for="surname">{$item.address}</label>
-				</td>
-				</tr>
-				
-				<tr>
-				<td class = "td" ><label for="surname">Meeting Date</label>
-				</td>
-				<td><label for="surname">{$item.meetingdate}</label>
-				</td>
-				</tr>
-				
-				<tr>
-				<td class = "td" ><label for="surname">Summary</label>
-				</td>
-				<td><label for="surname">{$item.summary}</label>
-				</td>
-				</tr>
-				
-				<tr>
-				<td class = "td" ><label for="surname">Contact Number</label>
-				</td>
-				<td><label for="surname">{$item.cnumber}</label>
-				</td>
-				</tr>
-				<tr>
-				<td class = "td" ><label for="surname">Contact Person</label>
-				</td>
-				<td><label for="surname">{$item.cperson}</label>
-				</td>
-				</tr>
-				
-				<tr>
-				<td class = "td"><label for="surname">Email</label>
-				</td>
-				<td><label for="surname">{$item.email}</label>
-				</td>
-				</tr>
-				</table>
-                                          
-               
-           
+<div class="dataGrid">
+  <table width="100%" border="0" cellspacing="3" cellpadding="0">
+    <tr>
+      <th class="dataGridTitle">Partner Name</th>
 
+    </tr>
 
-</div>
+    {foreach from=$user item=item}
+    <tr>
+      <td class="dataGridElement"><a id ="p_id"  onclick="details(this)" value = {$item.partnername} >{$item.partnername}</a> </td>
+
+    </tr>
+    {/foreach}
+  </table>
 </div>
 
-
-<input type="button" onclick = "printDiv('print')"  value="Print" style="margin-top:10px;margin-bottom:10px;margin-left:10px;"  />
 
 </form>
-
 {else}
 <!-- <div> This is when no result is found </div> -->
 <div class="" style="margin-top:10px;margin-bottom:10px;margin-left:10px;"  >
